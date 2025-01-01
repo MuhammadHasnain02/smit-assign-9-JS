@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="inpContainer">
+    <h1>Weather App</h1>
+    <label for="userCity">
+        Enter City : <input type="text" id="userCity" placeholder="Enter City Name">
+    </label>
+    <button onclick="userWeaCheck()">Check</button>
+
+</div>
+
+<div id="imgCont">
+    <img src="" id="weathimg">
+    <h2 id="temp"></h2>
+    <h2 id="weatText"></h2>
+</div>
+
+<div id="mainContainer">
+
+   <ul>
+    <li id="locat"></li><br>
+    <li id="feeltemp"></li><br>
+    <li id="faren"></li><br>
+    <li id="humid"></li><br>
+    <li id="visib"></li>
+   </ul>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+
+function userWeaCheck(){
+
+    let userCity = document.getElementById("userCity").value
+
+    axios.get(`https://api.weatherapi.com/v1/current.json?key=d347dfb1a00b4f86add45435242510&q=${userCity}`)
+
+        .then(function(response){
+
+            console.log("Response" , response.data);
+
+        document.getElementById("weathimg").src = `https:${response.data.current.condition.icon}`;
+        document.getElementById("temp").innerText = `${response.data.current.temp_c}°C`;
+        document.getElementById("weatText").innerText = `( ${response.data.current.condition.text} )`
+
+        document.getElementById("locat").innerText    = `Location : ${response.data.location.name}, ${response.data.location.region}, ${response.data.location.country}`+"\n";
+        document.getElementById("feeltemp").innerText = `Feels Like_C : ${response.data.current.feelslike_c} °C`
+        document.getElementById("faren").innerText    = `Fahrenheit : ${response.data.current.temp_f} °F`;
+        document.getElementById("humid").innerText    = `humidity : ${response.data.current.humidity} %`
+        document.getElementById("visib").innerText    = `Visibility : ${response.data.current.vis_km} Km`
+
+        document.getElementById("userCity").value = ""
+        })
+
+        .catch(function(error){
+            console.log("Error" , error);
+        })
+  }
+
+
+
+
+
+
+</script>
+
+</body>
+</html>
